@@ -20,12 +20,19 @@ class BluetoothDevice {
   /// Bonding state of the device.
   final BluetoothBondState bondState;
 
+  /// Device class id. 1664 for printers, 524 for phones, 1028 for headsets, etc.
+  /// You can check https://developer.android.com/reference/android/bluetooth/BluetoothClass.Device.html for more info
+  final int? deviceClassId;
+
   /// Tells whether the device is bonded (ready to secure connect).
   @Deprecated('Use `isBonded` instead')
   bool get bonded => bondState.isBonded;
 
   /// Tells whether the device is bonded (ready to secure connect).
   bool get isBonded => bondState.isBonded;
+
+  /// Tells whether the device class is printer.
+  bool get isPrinter => deviceClassId == 1664;
 
   /// Construct `BluetoothDevice` with given values.
   const BluetoothDevice({
@@ -34,6 +41,7 @@ class BluetoothDevice {
     this.type = BluetoothDeviceType.unknown,
     this.isConnected = false,
     this.bondState = BluetoothBondState.unknown,
+    this.deviceClassId,
   });
 
   /// Creates `BluetoothDevice` from map.
@@ -43,13 +51,12 @@ class BluetoothDevice {
     return BluetoothDevice(
       name: map["name"],
       address: map["address"]!,
-      type: map["type"] != null
-          ? BluetoothDeviceType.fromUnderlyingValue(map["type"])
-          : BluetoothDeviceType.unknown,
+      type: map["type"] != null ? BluetoothDeviceType.fromUnderlyingValue(map["type"]) : BluetoothDeviceType.unknown,
       isConnected: map["isConnected"] ?? false,
       bondState: map["bondState"] != null
           ? BluetoothBondState.fromUnderlyingValue(map["bondState"])
           : BluetoothBondState.unknown,
+      deviceClassId: map["deviceClassId"],
     );
   }
 
@@ -60,6 +67,7 @@ class BluetoothDevice {
         "type": this.type.toUnderlyingValue(),
         "isConnected": this.isConnected,
         "bondState": this.bondState.toUnderlyingValue(),
+        "deviceClassId": this.deviceClassId,
       };
 
   /// Compares for equality of this and other `BluetoothDevice`.

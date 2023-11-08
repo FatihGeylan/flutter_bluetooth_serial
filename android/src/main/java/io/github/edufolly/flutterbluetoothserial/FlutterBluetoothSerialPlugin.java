@@ -276,7 +276,7 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                         discoveryResult.put("address", device.getAddress());
                         discoveryResult.put("name", device.getName());
                         discoveryResult.put("type", device.getType());
-                        //discoveryResult.put("class", deviceClass); // @TODO . it isn't my priority for now !BluetoothClass!
+                        discoveryResult.put("deviceClassId", device.getBluetoothClass().getDeviceClass());
                         discoveryResult.put("isConnected", checkIsDeviceConnected(device));
                         discoveryResult.put("bondState", device.getBondState());
                         discoveryResult.put("rssi", deviceRSSI);
@@ -905,6 +905,7 @@ public class FlutterBluetoothSerialPlugin implements FlutterPlugin, ActivityAwar
                             entry.put("address", device.getAddress());
                             entry.put("name", device.getName());
                             entry.put("type", device.getType());
+                            entry.put("deviceClassId", device.getBluetoothClass().getDeviceClass());
                             entry.put("isConnected", checkIsDeviceConnected(device));
                             entry.put("bondState", BluetoothDevice.BOND_BONDED);
                             list.add(entry);
